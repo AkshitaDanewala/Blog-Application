@@ -18,7 +18,7 @@ const HomePosts = () => {
 
 <div className='bg-green-200 flex flex-col items-end  mb-2 text-sm font-semibold text-gray-500  md:mb-4 px-2 mt-2'>
 
-<div className="cratornamediv">
+<div className="creatornamediv">
 <span>Creator Name:</span> <span className='ml-1'>@snehasishdev</span>     
 </div>
 
