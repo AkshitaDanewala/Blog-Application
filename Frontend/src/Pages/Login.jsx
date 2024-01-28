@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Footer from "../Components/Footer"
+
 const Login = () => {
   return (
 
@@ -35,6 +37,7 @@ const Login = () => {
 
 </div>
     
+  <Footer/>
     </>
    
   )

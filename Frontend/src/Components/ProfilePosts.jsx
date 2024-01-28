@@ -3,7 +3,7 @@ import React from 'react'
 const ProfilePosts = () => {
   return (
 
-    <div className='w-full flex mt-8 space-x-8 px-4 bg-red-200 h-[35vh] py-2'>
+    <div className='w-full flex mt-8 space-x-8 px-4 bg-red-200  py-2'>
 
       <div className='leftdiv w-[35%] bg-red-200 h-[180px] flex justify-center items-center rounded'>
 <img src="https://incubator.ucf.edu/wp-content/uploads/2023/07/artificial-intelligence-new-technology-science-futuristic-abstract-human-brain-ai-technology-cpu-central-processor-unit-chipset-big-data-machine-learning-cyber-mind-domination-generative-ai-scaled-1-1500x1000.jpg" alt="" className='w-full h-full rounded object-cover' />
@@ -17,7 +17,7 @@ const ProfilePosts = () => {
 
 <p className='description text-sm md:text-lg '>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rem perferendis iusto error, similique corrupti sapiente.</p>
 
-<div className='bg-green-200 flex flex-col items-end  mb-2 text-sm font-semibold text-gray-500  md:mb-4 px-2 mt-2'>
+<div className='flex flex-col items-end  mb-2    text-sm font-semibold text-gray-500  md:mb-4 px-2 mt-2 '>
 
 <div className="creatornamediv">
 <span>Creator Name:</span> <span className='ml-1'>@snehasishdev</span>     
