@@ -1,9 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../Components/Navbar'
 import Footer from '../Components/Footer'
 import { ImCross } from "react-icons/im";
 
 const CreatePost = () => {
+
+  const [category, setcategory] = useState("")
+
+  const [categories, setcategories] = useState([])
+  // this is for categories array
+
+const addCategory = ()=>{
+
+  let updatedcategories = [...categories]
+  updatedcategories.push(category)
+  setcategory("")
+  setcategories(updatedcategories)
+}
+
+const deleteCategory = (i)=>{
+   let updatedcategories = [...categories]
+   updatedcategories.splice(i)
+  setcategories(updatedcategories)
+
+}
+
+
   return (
     <div >
 <Navbar/>
@@ -18,26 +40,26 @@ const CreatePost = () => {
 <div className='flex flex-col'>
 
 <div className='flex items-center space-x-4 md:space-x-8 bg-red-200'>
-<input className='px-4 py-2 outline-none' placeholder='Enter post category' type='text'/>
-<div className="btndiv bg-black text-white rounded px-4 py-2 font-semibold cursor-pointer">ADD</div>
+<input  value={category} onChange={(e)=> setcategory(e.target.value)} className='px-4 py-2 outline-none' placeholder='Enter post category' type='text'/>
+<div  onClick={addCategory} className="btndiv bg-black text-white rounded px-4 py-2 font-semibold cursor-pointer">ADD</div>
 </div>
 
 
 {/* categoriesdiv */}
-
 <div className='categorydiv  flex px-4 mt-3 '>
 
-<div className='categoryname flex items-center justify-center space-x-2 mr-4 bg-gray-200 px-2 py-1 rounded-md'>
-    <p>Tech</p>
-<p className='text-white bg-black rounded-full cursor-pointer p-1 text-sm'><ImCross /></p>
+{categories?.map((c, i)=>(
+  
+  <div  key={i} className='categoryname flex items-center justify-center space-x-2 mr-4 bg-gray-200 px-2 py-1 rounded-md'>
+    <p>{c}</p>
+<p onClick={()=> deleteCategory(i)}  className='text-white bg-black rounded-full cursor-pointer p-1 text-sm'><ImCross /></p>
 
 </div>
+  ))}
 
-<div className='categoryname flex items-center justify-center space-x-2 mr-4 bg-gray-200 px-2 py-1 rounded-md'>
-    <p>Tech</p>
-<p className='text-white bg-black rounded-full cursor-pointer p-1 text-sm'><ImCross /></p>
 
-</div>
+
+
 
 
 </div>
