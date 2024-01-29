@@ -4,10 +4,11 @@ const UserModel = require("../Models/usersModel")
 const bcrypt = require("bcrypt")
 const PostModel = require("../Models/postsModel")
 const CommentModel = require("../Models/commentModel")
+const verifyToken = require("../verifyToken")
 
 //CREATE POST
 
-router.post("/create", async(req,res)=>{
+router.post("/create", verifyToken, async(req,res)=>{
     try{
 
 const newpost = new PostModel(req.body)
@@ -28,7 +29,7 @@ res.status(200).json(newpost)
 
 //UPDATE POST
 
-router.put("/:id", async(req,res)=>{
+router.put("/:id", verifyToken, async(req,res)=>{
     try{
 
 const updatePost = await PostModel.findByIdAndUpdate(req.params.id,{$set: req.body}, {new:true})
@@ -42,7 +43,7 @@ res.status(200).json( updatePost)
 
 //DELETE POST
 
-router.delete("/:id", async(req,res)=>{
+router.delete("/:id", verifyToken, async(req,res)=>{
     try{
         await PostModel.findByIdAndDelete(req.params.id)
         res.status(200).json("Post has been deleted")
@@ -73,9 +74,15 @@ router.get("/:id", async(req,res)=>{
 //GET  ALL POSTS
 
 
-router.get("/", async(req,res)=>{
+router.get("/", async(req,res)=>{ 
+    const query = req.query
+ console.log(query)
+    
     try{
-        const Posts = await PostModel.find()
+        const searchFilter = {
+                title:{$regex:query.search, $options:"i"}
+        }
+        const Posts = await PostModel.find(query.search?searchFilter: null)
         res.status(200).json(Posts)
 
 
@@ -99,6 +106,9 @@ router.get("/user/:userId", async(req,res)=>{
         res.status(200).json(err)
     }
 })
+
+
+
 
 
 

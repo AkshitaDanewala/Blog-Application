@@ -4,10 +4,11 @@ const UserModel = require("../Models/usersModel")
 const bcrypt = require("bcrypt")
 const PostModel = require("../Models/postsModel")
 const CommentModel = require("../Models/commentModel")
+const  verifyToken = require("../verifyToken")
 
 //UPDATE
 
-router.put("/:id", async(req,res)=>{
+router.put("/:id",  verifyToken, async(req,res)=>{
     try{
 if(req.body.password){
     const salt = await bcrypt.genSalt(10)
@@ -27,7 +28,7 @@ res.status(200).json(updateUser)
 
 //DELETE
 
-router.delete("/:id", async(req,res)=>{
+router.delete("/:id",  verifyToken, async(req,res)=>{
     try{
         await UserModel.findByIdAndDelete(req.params.id)
         await PostModel.deleteMany({userId: req.params.id})
