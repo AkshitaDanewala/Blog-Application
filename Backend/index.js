@@ -1,24 +1,37 @@
 const express = require("express")
 const app = express()
-const dotenv = require("dotenv")
 const mongoose = require("mongoose")
+const dotenv = require("dotenv")
+const authRoute = require("./Routes/auth")
+const userRoute = require("./Routes/usersRoute")
+const postRoute = require("./Routes/postsRoute")
 
-dotenv.config()
 
 
-//database
-const connectDb = async()=>{
+const connectDB = async()=>{
     try{
-await mongoose.connect(process.env.MONGO_DB)
-console.log("database connected")
-
-    }catch(error){
-        console.log(error)
+        await mongoose.connect(process.env.MONGO_DB)
+        console.log("database connected")
+    }catch(err){
+        console.log(err)
     }
 }
- const port = process.env.PORT
+
+//middlewares
+dotenv.config()
+app.use(express.json())
+app.use("/api/auth",authRoute )
+app.use("/api/users",userRoute )
+app.use("/api/posts",postRoute )
+
+
+
+
+
+
+
 
 app.listen(process.env.PORT, ()=>{
-    connectDb()
-    console.log(`Port is running on ${port}`)
+    connectDB()
+    console.log("app is running on port 5000"+process.env.PORT)
 })
