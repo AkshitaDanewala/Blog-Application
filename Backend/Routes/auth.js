@@ -37,7 +37,7 @@ if(!matchpassword){
     return res.status(401).json("Wrong Credentials")
 }
 
-const JWTtoken = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: "1h"})
+const JWTtoken = jwt.sign({id: user._id, username: user.username, email: user.email}, process.env.JWT_SECRET, {expiresIn: "1h"})
 const {password,...info} = user._doc
 res.cookie("token", JWTtoken).status(200).json(info)
 
@@ -58,6 +58,19 @@ router.get("/logout", async(req,res)=>{
     }
 })
 
+
+//REFETCH ROUTE
+
+router.get("/refetch", (req,res)=>{
+    const token = req.cookies.token
+    jwt.verify(token, process.env.JWT_SECRET,{}, async(err,data)=>{
+        if(err){
+            return res.status(404).json(err)
+        }
+        res.status(200).json(data)
+
+    })
+})
 
 
 

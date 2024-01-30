@@ -7,10 +7,12 @@ import PostDetails from './Pages/PostDetails'
 import CreatePost from './Pages/CreatePost'
 import EditPosts from './Pages/EditPosts'
 import Profile from "./Pages/Profile.jsx"
+import { UserContextProvider } from './Context/UserContext.jsx'
 
 const App = () => {
   return (
-    <div>
+
+<UserContextProvider>
 
 
 <Routes>
@@ -25,17 +27,19 @@ const App = () => {
 
 
 
-
-
-
-
 </Routes>
 
 
 
+</UserContextProvider>
 
 
-    </div>
+
+
+
+
+
+
   )
 }
 
