@@ -16,6 +16,8 @@ const postId = useParams().id
 // console.log(postId)
 const [post, setpost] = useState({})
 const {user }  = useContext(UserContext)
+const [comments, setcomments] = useState([])
+const [comment, setcomment] = useState("")
 const [loader, setloader] = useState(false)
 const navigate = useNavigate()
 
@@ -49,13 +51,43 @@ const handleDeletePost = async()=>{
 }
 
 
-
-
 useEffect(()=>{
   fetchPost()
 },[postId])
 
 
+const fetchPostComments = async()=>{
+  try{
+
+    const res = await axios.get(URL+"/api/comments/post"+postId)
+    setcomments(res.data)
+
+  }catch(err){
+    console.log(err)
+  }
+}
+
+
+useEffect(()=>{
+  fetchPostComments()
+},[postId])
+
+
+const postComment = async(e)=>{
+e.preventDefault()
+try{
+
+  const res = await axios.post(URL+"/api/comments/create", {comment:comment, author:user.username, postId:postId, userId:user._id}, {withCredentials:true})
+  // setcomment("")
+  // console.log(res.data)
+
+}catch(err){
+  console.log(err)
+}
+
+
+
+}
 
 
 
@@ -71,7 +103,7 @@ useEffect(()=>{
     {post.title}
     </h1>
 {user?._id === post?.userId && <div className='btndiv flex items-center justify-center space-x-2'>
-<p className='text-xl cursor-pointer'><BiEdit /></p>
+<p className='text-xl cursor-pointer' onClick={()=>navigate("/edit/"+postId)}><BiEdit /></p>
 <p className='text-xl cursor-pointer'  onClick={handleDeletePost}><MdDelete /> </p>
     </div> }
     
@@ -111,9 +143,9 @@ useEffect(()=>{
 {/* comment */}
 <div className='commentsection flex flex-col mt-4 bg-red-200'>
 <h3 className='mt-6 mb-4 font-semibold'>Comments:</h3>
-<Comment/>
-<Comment/>
-<Comment/>
+{comments?.map((c)=>(
+<Comment key={c._id} c={c}/>
+))}
 
 
 
@@ -121,8 +153,8 @@ useEffect(()=>{
 
 {/* write a comment */}
 <div className=' w-full flex flex-col mt-4 md:flex-row  '>
-  <input type="text" placeholder='Write a Comment!' className='md:w-[80%] outline-none px-4 py-2 mt-4 md:mt-0 bg-green-200' />
-  <button className='bg-black text-white text-sm px-4 py-2 rounded md:w-[20%] mt-4 md:mt-0'>Add Comment</button>
+  <input  onChange={(e)=> setcomment(e.target.value)} type="text" placeholder='Write a Comment!' className='md:w-[80%] outline-none px-4 py-2 mt-4 md:mt-0 bg-green-200' />
+  <button  onClick={postComment} className='bg-black text-white text-sm px-4 py-2 rounded md:w-[20%] mt-4 md:mt-0'>Add Comment</button>
 </div>
 
 

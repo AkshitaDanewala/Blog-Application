@@ -1,14 +1,95 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
 import Footer from '../Components/Footer'
 import { ImCross } from "react-icons/im";
+import axios from 'axios';
+import {URL} from "../Url"
+import { useNavigate, useParams } from 'react-router-dom';
+import { UserContext } from '../Context/UserContext';
 
 const EditPosts = () => {
 
+  const postId = useParams().id
+  const {user} = useContext(UserContext)
+  const navigate = useNavigate()
 
+const [title, setTitle] = useState("")
+const [desc, setdesc] = useState("")
+const [file, setFile] = useState(null)
 const [category, setcategory] = useState("")
 const [categories, setcategories] = useState([])
   // this is for categories array
+
+
+  const fetchPost = async()=>{
+    try{
+      const res = await axios.get(URL+"/api/posts/"+postId)
+      setTitle(res.data.title)
+      setdesc(res.data.desc)
+      setFile(res.data.photo)
+      setcategories(res.data.categories)
+
+
+    }catch(err){
+      console.log(err)
+    }
+
+  }
+
+
+const handleUpdate = async(e)=>{
+  e.preventDefault()
+
+  const post = {
+    title, 
+    desc,
+    username:user.username, 
+    userId: user._id,
+    categories: categories  
+  
+  }
+  if(file){
+    const data = new FormData()
+    const filename = Date.now()+file.name
+    data.append("img", filename)
+    data.append("file",file)
+    post.photo = filename
+    // console.log(data)
+  
+  
+    try{
+      const imgupload = await axios.post(URL+"/api/upload", data)
+      // console.log(imgupload.data)
+    
+    }catch(err){
+      console.log(err)
+    } 
+  
+  }
+  
+  //post upload
+  // console.log(post)
+  try{
+  const res = await axios.put(URL+"/api/posts/"+postId, post, {withCredentials: true})
+  navigate("/posts/post/"+res.data._id)
+  // console.log(res.data)
+  
+  
+  }catch(err){  
+    console.log(err)
+  }
+
+}
+
+
+
+  useEffect(()=>{
+    fetchPost()
+  }, [postId])
+
+
+
+
 
 const addCategory = ()=>{
 
@@ -41,8 +122,8 @@ const deleteCategory = (i)=>{
     <h1 className='font-bold md:text-2xl text-xl '>Update Post</h1>    
     
     <form className='w-full flex flex-col space-y-4 md:space-y-8 mt-4'>
-    <input type="text" placeholder='Enter post title' className='px-4 py-2 outline-none border border-black '/>
-    <input type="file" className='px-4'/>
+    <input onChange={(e)=> setTitle(e.target.value)} value={title} type="text" placeholder='Enter post title' className='px-4 py-2 outline-none border border-black '/>
+    <input  onChange={(e)=> setFile(e.target.files[0])} type="file" className='px-4'/>
     
     <div className='flex flex-col'>
     
@@ -74,11 +155,11 @@ const deleteCategory = (i)=>{
     
     </div>
     
-    <textarea className='px-4 py-2 outline-none' id="" cols={30} rows={15} placeholder='Enter post description'></textarea>
+    <textarea  onChange={(e)=> setdesc(e.target.value)}  value={desc} className='px-4 py-2 outline-none' id="" cols={30} rows={15} placeholder='Enter post description'></textarea>
     
-    <button className='bg-black w-full md:w-[20% ] mx-auto text-white font-semibold rounded px-4 py-2 md:text-xl text-lg'>Update</button>
+    <button onClick={handleUpdate} className='bg-black w-full md:w-[20% ] mx-auto text-white font-semibold rounded px-4 py-2 md:text-xl text-lg'>Update</button>
     
-    </form>
+    </form>   
     
     </div>
     
