@@ -1,14 +1,26 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Navbar from '../Components/Navbar'
 import Footer from '../Components/Footer'
 import { ImCross } from "react-icons/im";
+import { UserContext } from '../Context/UserContext';
+import axios from 'axios';
+import {URL} from "../Url"
+import { useNavigate } from 'react-router-dom';
 
 const CreatePost = () => {
 
   const [category, setcategory] = useState("")
-
   const [categories, setcategories] = useState([])
   // this is for categories array
+
+const [title, setTitle] = useState("")
+const [desc, setdesc] = useState("")
+const [file, setfile] = useState(null)
+const{user} = useContext(UserContext)
+// console.log(file)
+const navigate = useNavigate()
+
+
 
 const addCategory = ()=>{
 
@@ -26,6 +38,52 @@ const deleteCategory = (i)=>{
 }
 
 
+const handleCreate = async(e)=>{
+e.preventDefault()
+
+const post = {
+  title, 
+  desc,
+  username:user.username, 
+  userId: user._id,
+  categories: categories  
+
+}
+if(file){
+  const data = new FormData()
+  const filename = Date.now()+file.name
+  data.append("img", filename)
+  data.append("file",file)
+  post.photo = filename
+  // console.log(data)
+
+
+  try{
+    const imgupload = await axios.post(URL+"/api/upload", data)
+    // console.log(imgupload.data)
+  
+  }catch(err){
+    console.log(err)
+  } 
+
+}
+
+//post upload
+// console.log(post)
+try{
+const res = await axios.post(URL+"/api/posts/create",post, {withCredentials: true})
+navigate("/posts/post/"+res.data._id)
+// console.log(res.data)
+
+
+}catch(err){  
+  console.log(err)
+}
+
+
+}
+
+
   return (
     <div >
 <Navbar/>
@@ -34,8 +92,8 @@ const deleteCategory = (i)=>{
 <h1 className='font-bold md:text-2xl text-xl '>Create Post</h1>    
 
 <form className='w-full flex flex-col space-y-4 md:space-y-8 mt-4'>
-<input type="text" placeholder='Enter post title' className='px-4 py-2 outline-none border border-black '/>
-<input type="file" className='px-4'/>
+<input onChange={(e)=> setTitle(e.target.value)}  type="text" placeholder='Enter post title' className='px-4 py-2 outline-none border border-black '/>
+<input onChange={(e)=> setfile(e.target.files[0]) }   type="file" className='px-4'/>
 
 <div className='flex flex-col'>
 
@@ -67,9 +125,9 @@ const deleteCategory = (i)=>{
 
 </div>
 
-<textarea className='px-4 py-2 outline-none' id="" cols={30} rows={15} placeholder='Enter post description'></textarea>
+<textarea onChange={(e)=> setdesc(e.target.value) }  className='px-4 py-2 outline-none' id="" cols={30} rows={15} placeholder='Enter post description'></textarea>
 
-<button className='bg-black w-full md:w-[20% ] mx-auto text-white font-semibold rounded px-4 py-2 md:text-xl text-lg'>Create</button>
+<button onClick={handleCreate} className='bg-black w-full md:w-[20% ] mx-auto text-white font-semibold rounded px-4 py-2 md:text-xl text-lg'>Create</button>
 
 </form>
 

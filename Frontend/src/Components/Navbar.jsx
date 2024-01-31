@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { BsSearch } from "react-icons/bs";
 import { FaBars } from "react-icons/fa";
 import Menu from "../Components/Menu"
@@ -11,6 +11,11 @@ const [menu, setmenu]= useState(false)
 const [prompt, setprompt] = useState("")
 const navigate = useNavigate()
 // console.log(prompt)
+const path = useLocation().pathname
+console.log(path)
+
+
+
 
 const showMenu = ()=>{
   setmenu(!menu)
@@ -23,11 +28,10 @@ const {user} = useContext(UserContext)
         
         <h1 className='text-2xl md:text-xl font-extrabold'><Link to="/">BlogVista</Link> </h1>
 
-        <div className='flex justify-ceneter items-center space-x-0'>
+       {path ==="/" && <div className='flex justify-ceneter items-center space-x-0'>
          <p onClick={()=>navigate(prompt?"?search="+prompt:navigate("/"))}  className='text-xl cursor-pointer'><BsSearch /></p>
-         <input onChange={(e)=> setprompt(e.target.value)}  className='outline-none px-3 py-1 bg-gray-200 rounded-full' type="text" placeholder='Search Your Post' />
-
-        </div>  
+         <input onChange={(e)=> setprompt(e.target.value)}  className='outline-none px-3 py-1 bg-gray-200 rounded-full' type="text" placeholder='Search Your Post' /> 
+        </div>}
 
         <div className=' hidden md:flex items-center justify-center  space-x-2 md:space-x-4'>
 

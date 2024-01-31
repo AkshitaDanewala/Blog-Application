@@ -1,11 +1,12 @@
 import React from 'react'
+import {IF} from "../Url"
 
 const HomePosts = ({post}) => {
   return (
     <div className='w-full flex mt-8 space-x-8 px-4 bg-red-200  py-2'>
 
       <div className='leftdiv w-[35%] bg-red-200 h-[200px] flex justify-center items-center rounded'>
-<img src={post.photo} alt="" className='w-full h-full rounded object-cover' />
+<img src={IF+post.photo} alt="" className='w-full h-full rounded object-cover' />
         
       </div>
 

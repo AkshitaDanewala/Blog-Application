@@ -46,6 +46,7 @@ res.status(200).json( updatePost)
 router.delete("/:id", verifyToken, async(req,res)=>{
     try{
         await PostModel.findByIdAndDelete(req.params.id)
+        await CommentModel.deleteMany({postId: req.params.id})
         res.status(200).json("Post has been deleted")
 
 

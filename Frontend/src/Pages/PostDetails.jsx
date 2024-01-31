@@ -1,26 +1,47 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
 import Footer from '../Components/Footer'
 import Comment from "../Components/Comment"
 import { BiEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import {URL} from "../Url"
+import {URL, IF} from "../Url"
+import { UserContext } from '../Context/UserContext';
+import Loader from "../Components/Loader"
 
 const PostDetails = () => {
 
 const postId = useParams().id
 // console.log(postId)
 const [post, setpost] = useState({})
+const {user }  = useContext(UserContext)
+const [loader, setloader] = useState(false)
+const navigate = useNavigate()
 
 
 const fetchPost = async()=>{
+  setloader(true)
   try{  
 
     const res = await axios.get(URL+"/api/posts/"+postId)
     // console.log(res.data)
     setpost(res.data)
+    setloader(false)
+
+  }catch(err){
+    console.log(err)
+  setloader(true)
+
+  }
+}
+
+
+const handleDeletePost = async()=>{
+  try{
+    const res = await axios.delete(URL+"/api/posts/"+postId, {withCredentials:true})
+    console.log(res.data)
+    navigate("/")
 
   }catch(err){
     console.log(err)
@@ -28,26 +49,32 @@ const fetchPost = async()=>{
 }
 
 
+
+
 useEffect(()=>{
   fetchPost()
 },[postId])
+
+
+
+
 
   return (
   <div className='maindiv h-[100%]'>
 
 <Navbar/>
 
-<div className='px-8 md:px-[200px] mt-8 bg-yellow-200  '>
+{loader?<div className='h-[80vh] flex justify-center items-center w-full'><Loader/></div>:<div className='px-8 md:px-[200px] mt-8 bg-yellow-200  '>
 
 <div className='titlediv flex justify-between items-center'>
     <h1 className='text-2xl font-bold text-black md:text-3xl '>
     {post.title}
     </h1>
-
-    <div className='btndiv flex items-center justify-center space-x-2'>
-<p className='text-xl'><BiEdit /></p>
-<p className='text-xl'><MdDelete /> </p>
-    </div>
+{user?._id === post?.userId && <div className='btndiv flex items-center justify-center space-x-2'>
+<p className='text-xl cursor-pointer'><BiEdit /></p>
+<p className='text-xl cursor-pointer'  onClick={handleDeletePost}><MdDelete /> </p>
+    </div> }
+    
 
 </div>
 
@@ -60,7 +87,7 @@ useEffect(()=>{
 
 </div>
 
-<img src={post.photo} alt="" className='w-full h-[65vh] mx-auto rounded-lg mt-8' />
+<img src={IF+post.photo} alt="" className='w-full h-[65vh] mx-auto rounded-lg mt-8' />
 
 <p className='postdescription mx-auto mt-8'>{post.desc}</p>
 
@@ -100,19 +127,10 @@ useEffect(()=>{
 
 
 
-</div>
-
-
-
-
-
-
-
+</div>}
 <Footer/>
-
-
-    </div>
+ </div>
   )
-}
+} 
 
 export default PostDetails
