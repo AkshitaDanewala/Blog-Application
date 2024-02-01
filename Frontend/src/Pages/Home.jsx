@@ -63,11 +63,6 @@ useEffect(()=>{
   </>
 
   // this is for agar user hai to he post details dikhe wrna vo login page pr chla jaaye
-
-
-
-
- 
 )): <h3 className='text-center  text-xl font-bold mt-16'>No Post Available </h3>}
 
 </div>
