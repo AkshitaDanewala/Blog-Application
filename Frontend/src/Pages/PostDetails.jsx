@@ -3,7 +3,7 @@ import Navbar from '../Components/Navbar'
 import Footer from '../Components/Footer'
 import Comment from "../Components/Comment"
 import { BiEdit } from "react-icons/bi";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdTurnedIn } from "react-icons/md";
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import {URL, IF} from "../Url"
@@ -59,7 +59,7 @@ useEffect(()=>{
 const fetchPostComments = async()=>{
   try{
 
-    const res = await axios.get(URL+"/api/comments/post"+postId)
+    const res = await axios.get(URL+"/api/comments/post/"+postId)
     setcomments(res.data)
 
   }catch(err){
@@ -78,14 +78,14 @@ e.preventDefault()
 try{
 
   const res = await axios.post(URL+"/api/comments/create", {comment:comment, author:user.username, postId:postId, userId:user._id}, {withCredentials:true})
+  // fetchPostComments()
   // setcomment("")
+  window.location.reload(true)
   // console.log(res.data)
 
 }catch(err){
   console.log(err)
 }
-
-
 
 }
 
@@ -144,7 +144,7 @@ try{
 <div className='commentsection flex flex-col mt-4 bg-red-200'>
 <h3 className='mt-6 mb-4 font-semibold'>Comments:</h3>
 {comments?.map((c)=>(
-<Comment key={c._id} c={c}/>
+<Comment key={c._id} c={c} post={post}/>
 ))}
 
 
