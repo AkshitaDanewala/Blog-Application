@@ -92,14 +92,14 @@ navigate("/posts/post/"+res.data._id)
 <h1 className='font-bold md:text-2xl text-xl '>Create Post</h1>    
 
 <form className='w-full flex flex-col space-y-4 md:space-y-8 mt-4'>
-<input onChange={(e)=> setTitle(e.target.value)}  type="text" placeholder='Enter post title' className='px-4 py-2 outline-none border border-black '/>
-<input onChange={(e)=> setfile(e.target.files[0]) }   type="file" className='px-4'/>
+<input onChange={(e)=> setTitle(e.target.value)}  type="text" placeholder='Enter post title' className='px-4 py-2 outline-none rounded border border-black '/>
+<input onChange={(e)=> setfile(e.target.files[0]) }   type="file" className='px-4 py-2 rounded border border-black'/>
 
 <div className='flex flex-col'>
 
-<div className='flex items-center space-x-4 md:space-x-8 bg-red-200'>
-<input  value={category} onChange={(e)=> setcategory(e.target.value)} className='px-4 py-2 outline-none' placeholder='Enter post category' type='text'/>
-<div  onClick={addCategory} className="btndiv bg-black text-white rounded px-4 py-2 font-semibold cursor-pointer">ADD</div>
+<div className='flex items-center space-x-4 md:space-x-8 '>
+<input  value={category} onChange={(e)=> setcategory(e.target.value)} className='px-4 py-2 outline-none rounded border border-black' placeholder='Enter post category' type='text'/>
+<div  onClick={addCategory} className="btndiv bg-black text-white rounded px-6 py-2 font-semibold cursor-pointer">ADD</div>
 </div>
 
 
@@ -125,7 +125,7 @@ navigate("/posts/post/"+res.data._id)
 
 </div>
 
-<textarea onChange={(e)=> setdesc(e.target.value) }  className='px-4 py-2 outline-none' id="" cols={30} rows={15} placeholder='Enter post description'></textarea>
+<textarea onChange={(e)=> setdesc(e.target.value) }  className='px-4 py-2 outline-none rounded border border-black' id="" cols={30} rows={8} placeholder='Enter post description'></textarea>
 
 <button onClick={handleCreate} className='bg-black w-full md:w-[20% ] mx-auto text-white font-semibold rounded px-4 py-2 md:text-xl text-lg'>Create</button>
 

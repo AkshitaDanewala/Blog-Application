@@ -92,11 +92,11 @@ try{
 
 
   return (
-  <div className='maindiv h-[100%]'>
+  <div className='maindiv h-full'>
 
 <Navbar/>
 
-{loader?<div className='h-[80vh] flex justify-center items-center w-full'><Loader/></div>:<div className='px-8 md:px-[200px] mt-8 bg-yellow-200  '>
+{loader?<div className='h-[80vh] flex justify-center items-center w-full'><Loader/></div>:<div className='px-8 md:px-[200px] mt-8 bg-slate-200 '>
 
 <div className='titlediv flex justify-between items-center'>
     <h1 className='text-2xl font-bold text-black md:text-3xl '>
@@ -123,13 +123,13 @@ try{
 
 <p className='postdescription mx-auto mt-8'>{post.desc}</p>
 
-<div className='categorydiv flex items-center mt-8 space-x-4 font-semibold bg-blue-200'>
-<p>categories:</p>
+<div className='categorydiv flex items-center mt-8 space-x-4 font-semibold '>
+<p>Categories:</p>
 
 <div className='categories flex justify-center items-center space-x-2'>
 {post.categories?.map((c,i)=>(
 <>
-<h1 key={i} className='bg-gray-300 rounded-lg px-3 py-1'>{c}</h1>
+<h1 key={i} className='bg-white rounded-lg px-3 py-1'>{c}</h1>
 
 </>
   
@@ -141,7 +141,7 @@ try{
 </div>
 
 {/* comment */}
-<div className='commentsection flex flex-col mt-4 bg-red-200'>
+<div className='commentsection flex flex-col mt-4 bg-white rounded px-5'>
 <h3 className='mt-6 mb-4 font-semibold'>Comments:</h3>
 {comments?.map((c)=>(
 <Comment key={c._id} c={c} post={post}/>
@@ -152,9 +152,9 @@ try{
 </div>
 
 {/* write a comment */}
-<div className=' w-full flex flex-col mt-4 md:flex-row  '>
-  <input  onChange={(e)=> setcomment(e.target.value)} type="text" placeholder='Write a Comment!' className='md:w-[80%] outline-none px-4 py-2 mt-4 md:mt-0 bg-green-200' />
-  <button  onClick={postComment} className='bg-black text-white text-sm px-4 py-2 rounded md:w-[20%] mt-4 md:mt-0'>Add Comment</button>
+<div className=' w-full flex flex-col mt-4 md:flex-row   '>
+  <input  onChange={(e)=> setcomment(e.target.value)} type="text" placeholder='Write a Comment!' className='md:w-[80%] outline-none border-2 border-black rounded px-4 py-2 mt-4 md:mt-0' />
+  <button  onClick={postComment} className='bg-black text-white text-sm px-2 py-2 ml-2 rounded md:w-[20%] mt-4 md:mt-0'>Add Comment</button>
 </div>
 
 
